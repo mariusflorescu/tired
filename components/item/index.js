@@ -3,7 +3,7 @@ import useStore from "../../context";
 import { StyledItem, animationBlur } from "./styles";
 
 const Item = ({ id, text }) => {
-  const { update } = useStore();
+  const store = useStore();
   const itemRef = React.useRef(null);
   const [value, setValue] = React.useState(text);
 
@@ -17,7 +17,7 @@ const Item = ({ id, text }) => {
   };
 
   const updateItem = () => {
-    update({
+    store.update({
       key: id,
       text: value,
     });
@@ -27,11 +27,13 @@ const Item = ({ id, text }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      updateItem();
+      store.updateItem();
 
       if (itemRef && itemRef.current) {
         itemRef.current.blur();
       }
+    } else if (e.key === "Backspace" && value.length === 0) {
+      store.delete(id);
     }
   };
 
@@ -44,7 +46,7 @@ const Item = ({ id, text }) => {
       ref={itemRef}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      onBlur={updateItem}
+      onBlur={store.updateItem}
       onKeyDown={(e) => handleKeyDown(e)}
       onMouseOver={() => {
         if (itemRef && itemRef.current) {

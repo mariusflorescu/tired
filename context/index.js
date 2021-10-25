@@ -7,7 +7,7 @@ const useStore = create(
     (set, get) => ({
       list: [],
       add: (item) => set({ list: [item, ...get().list] }),
-      delete: (key) => set({ list: get().list.filter((el) => el.key === key) }),
+      delete: (key) => set({ list: get().list.filter((el) => el.key !== key) }),
       update: (element) => set({ list: updateObject(element, get().list) }),
       clearAll: () => set({ list: [] }),
     }),
