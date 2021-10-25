@@ -7,13 +7,36 @@ const Item = ({ id, text }) => {
   const itemRef = React.useRef(null);
   const [value, setValue] = React.useState(text);
 
-  React.useEffect(() => {
+  const triggerAnimation = () => {
     if (itemRef && itemRef.current) {
       itemRef.current.style.animation = `${animationBlur} 5s`;
       setTimeout(() => {
         itemRef.current.style.animation = "";
       }, 5000);
     }
+  };
+
+  const updateItem = () => {
+    update({
+      key: id,
+      text: value,
+    });
+
+    triggerAnimation();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      updateItem();
+
+      if (itemRef && itemRef.current) {
+        itemRef.current.blur();
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    triggerAnimation();
   }, []);
 
   return (
@@ -21,12 +44,8 @@ const Item = ({ id, text }) => {
       ref={itemRef}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      onBlur={() =>
-        update({
-          key: id,
-          text: value,
-        })
-      }
+      onBlur={updateItem}
+      onKeyDown={(e) => handleKeyDown(e)}
       onMouseOver={() => {
         if (itemRef && itemRef.current) {
           itemRef.current.style.animation = "";
