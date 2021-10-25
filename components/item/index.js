@@ -62,7 +62,7 @@ const Item = ({ id, text }) => {
           itemRef.current.style.animation = "";
         }
       }}
-      placeholder="&larr; Erase it..."
+      placeholder="Erase it... &#128465;"
     />
   );
 };
