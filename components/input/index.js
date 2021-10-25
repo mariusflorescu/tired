@@ -4,7 +4,7 @@ import generateId from "../../lib/generateId";
 import { StyledInput } from "./styles";
 
 const Input = () => {
-  const {list, add} = useStore();
+  const { add } = useStore();
   const [current, setCurrent] = React.useState("");
 
   const handleKeyDown = (e) => {
