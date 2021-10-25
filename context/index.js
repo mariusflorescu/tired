@@ -6,6 +6,7 @@ const useStore = create(
   persist(
     (set, get) => ({
       list: [],
+      exists: (item) => get().list.findIndex((obj) => obj.key === item.key),
       add: (item) => set({ list: [item, ...get().list] }),
       delete: (key) => set({ list: get().list.filter((el) => el.key !== key) }),
       update: (element) => set({ list: updateObject(element, get().list) }),

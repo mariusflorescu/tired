@@ -11,7 +11,10 @@ const Item = ({ id, text }) => {
     if (itemRef && itemRef.current) {
       itemRef.current.style.animation = `${animationBlur} 5s`;
       setTimeout(() => {
-        itemRef.current.style.animation = "";
+        if (itemRef && itemRef.current) {
+          // pretty dumb but in case the last entry gets deleted it wont break the app
+          itemRef.current.style.animation = "";
+        }
       }, 5000);
     }
   };
@@ -27,7 +30,7 @@ const Item = ({ id, text }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      store.updateItem();
+      updateItem();
 
       if (itemRef && itemRef.current) {
         itemRef.current.blur();
@@ -41,6 +44,12 @@ const Item = ({ id, text }) => {
     triggerAnimation();
   }, []);
 
+  React.useEffect(() => {
+    if (store.list.length === 0) {
+      itemRef = null;
+    }
+  }, [store.list]);
+
   return (
     <StyledItem
       ref={itemRef}
@@ -53,6 +62,7 @@ const Item = ({ id, text }) => {
           itemRef.current.style.animation = "";
         }
       }}
+      placeholder="&larr; Erase it..."
     />
   );
 };
