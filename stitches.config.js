@@ -55,6 +55,15 @@ export const {
       5: "19px",
       6: "21px",
     },
+    radii: {
+      1: "4px",
+      2: "8px",
+      3: "12px",
+      4: "16px",
+      5: "20px",
+      6: "24px",
+      max: "50%",
+    },
     fonts: {
       system: "system-ui",
     },

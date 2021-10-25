@@ -9,15 +9,20 @@ const animationBlur = keyframes({
   },
 });
 
-const StyledItem = styled("span", {
+const StyledItem = styled("input", {
+  all: "unset",
   paddingY: "$3",
+  paddingX: "$2",
+  borderRadius: "$1",
   filter: "blur(4px) opacity(0.6)",
 
   "@motionSafe": {
-    transition: "filter 250ms ease",
+    transition: "250ms ease",
+    transitionProperty: "background-color, filter",
   },
 
-  "&:hover": {
+  "&:hover, &:focus": {
+    backgroundColor: "$gray200",
     filter: "blur(0) opacity(1)",
     animation: "none",
   },

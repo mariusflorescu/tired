@@ -4,10 +4,11 @@ import Item from "../item";
 
 const List = () => {
   const { list: items } = useStore();
+
   return (
     <Wrapper>
       {items.map(({ key, text }) => (
-        <Item key={key}>{text}</Item>
+        <Item key={key} id={key} text={text}></Item>
       ))}
     </Wrapper>
   );
