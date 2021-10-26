@@ -31,17 +31,31 @@ const Input = () => {
     }
   };
 
+  const handleOnChange = (e) => {
+    //endless if but whatever
+    if (
+      e.target.value.length < limit &&
+      (e.target.value.trim() !== "" || current.trim() !== "") &&
+      (current.length < limit || e.target.value.length < current.length)
+    ) {
+      setCurrent(e.target.value);
+    }
+    //slice if bigger
+    else if (e.target.value.length > limit) {
+      const diff = e.target.value.length - limit;
+      let str = e.target.value;
+      const slice = str.slice(0, -1 * diff);
+      setCurrent(slice);
+    }
+  };
+
   return (
     <React.Fragment>
       <StyledInput
         rows={1}
         ref={textareaRef}
         value={current}
-        onChange={(e) =>
-          e.target.value.trim() !== "" || current.trim() !== ""
-            ? setCurrent(e.target.value)
-            : null
-        }
+        onChange={(e) => handleOnChange(e)}
         onKeyDown={(e) => handleKeyDown(e)}
         placeholder="Write your thoughts..."
       />
