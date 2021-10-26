@@ -9,12 +9,13 @@ const animationBlur = keyframes({
   },
 });
 
-const StyledItem = styled("input", {
+const StyledItem = styled("textarea", {
   all: "unset",
   paddingY: "$3",
   paddingX: "$2",
   borderRadius: "$1",
   filter: "blur(4px) opacity(0.6)",
+  whiteSpace: "pre-line",
 
   "@motionSafe": {
     transition: "250ms ease",
