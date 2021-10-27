@@ -47,8 +47,7 @@ const Input = () => {
 
   if (textareaRef && textareaRef.current) {
     textareaRef.current.style.height = "auto";
-    const { scrollHeight } = textareaRef.current;
-    textareaRef.current.style.height = `calc(${scrollHeight}px - 32px)`;
+    textareaRef.current.style.height = `calc(${textareaRef.current.scrollHeight}px - 32px)`;
   }
 
   return (
