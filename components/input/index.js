@@ -8,8 +8,6 @@ const limit = 240;
 const Input = () => {
   const { add } = useStore();
   const [current, setCurrent] = React.useState("");
-  const [justAdded, setJustAdded] = React.useState(true);
-  const [rows, setRows] = React.useState(1);
 
   const textareaRef = React.useRef(null);
 
@@ -22,12 +20,10 @@ const Input = () => {
         };
         add(obj);
         setCurrent("");
-        setRows(1);
       } else {
         setCurrent("");
       }
     } else if (e.keyCode === 13 && current.trim() !== "") {
-      setRows((prev) => prev + 1);
     }
   };
 
@@ -48,6 +44,12 @@ const Input = () => {
       setCurrent(slice);
     }
   };
+
+  if (textareaRef && textareaRef.current) {
+    textareaRef.current.style.height = "auto";
+    const { scrollHeight } = textareaRef.current;
+    textareaRef.current.style.height = `calc(${scrollHeight}px - 32px)`;
+  }
 
   return (
     <React.Fragment>
