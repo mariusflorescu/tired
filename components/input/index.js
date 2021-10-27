@@ -46,8 +46,11 @@ const Input = () => {
   };
 
   if (textareaRef && textareaRef.current) {
+    const currentStyling = window.getComputedStyle(textareaRef.current);
+    const paddingTop = currentStyling.getPropertyValue("padding-top");
+    const paddingBottom = currentStyling.getPropertyValue("padding-bottom");
     textareaRef.current.style.height = "auto";
-    textareaRef.current.style.height = `calc(${textareaRef.current.scrollHeight}px - 32px)`;
+    textareaRef.current.style.height = `calc(${textareaRef.current.scrollHeight}px - ${paddingTop} - ${paddingBottom})`;
   }
 
   return (
