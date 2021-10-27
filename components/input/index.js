@@ -30,7 +30,7 @@ const Input = () => {
   const handleOnChange = (e) => {
     //endless if but whatever
     if (
-      e.target.value.length < limit &&
+      e.target.value.length <= limit &&
       (e.target.value.trim() !== "" || current.trim() !== "") &&
       (current.length < limit || e.target.value.length < current.length)
     ) {
