@@ -1,9 +1,12 @@
 import React from "react";
 import useStore from "../../context";
+import {
+  limit,
+  handleThoughtChange,
+  handleTextareaStyleChange,
+} from "../../lib/handlers";
 import generateId from "../../lib/generateId";
 import { StyledInput, Small } from "./styles";
-
-const limit = 240;
 
 const Input = () => {
   const { add } = useStore();
@@ -28,31 +31,7 @@ const Input = () => {
     }
   };
 
-  const handleOnChange = (e) => {
-    //endless if but whatever
-    if (
-      e.target.value.length <= limit &&
-      (e.target.value.trim() !== "" || current.trim() !== "") &&
-      (current.length < limit || e.target.value.length < current.length)
-    ) {
-      setCurrent(e.target.value);
-    }
-    //slice if bigger
-    else if (e.target.value.length > limit) {
-      const diff = e.target.value.length - limit;
-      let str = e.target.value;
-      const slice = str.slice(0, -1 * diff);
-      setCurrent(slice);
-    }
-  };
-
-  if (textareaRef && textareaRef.current) {
-    const currentStyling = window.getComputedStyle(textareaRef.current);
-    const paddingTop = currentStyling.getPropertyValue("padding-top");
-    const paddingBottom = currentStyling.getPropertyValue("padding-bottom");
-    textareaRef.current.style.height = "auto";
-    textareaRef.current.style.height = `calc(${textareaRef.current.scrollHeight}px - ${paddingTop} - ${paddingBottom})`;
-  }
+  handleTextareaStyleChange(textareaRef);
 
   return (
     <React.Fragment>
@@ -60,7 +39,7 @@ const Input = () => {
         rows={1}
         ref={textareaRef}
         value={current}
-        onChange={(e) => handleOnChange(e)}
+        onChange={(e) => handleThoughtChange(e, current, setCurrent)}
         onKeyDown={(e) => handleKeyDown(e)}
         placeholder="Write your thoughts..."
       />

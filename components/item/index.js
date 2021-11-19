@@ -1,17 +1,19 @@
 import React from "react";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
 import useStore from "../../context";
+import {
+  handleThoughtChange,
+  handleTextareaStyleChange,
+} from "../../lib/handlers";
 import {
   StyledItem,
   animationBlur,
   StyledDateWrapper,
   StyledDate,
 } from "./styles";
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
 
 dayjs.extend(relativeTime);
-
-const limit = 240;
 
 const Item = ({ id, text, date }) => {
   const store = useStore();
@@ -53,24 +55,6 @@ const Item = ({ id, text, date }) => {
     }
   };
 
-  const handleOnChange = (e) => {
-    //endless if but whatever
-    if (
-      e.target.value.length <= limit &&
-      (e.target.value.trim() !== "" || value.trim() !== "") &&
-      (value.length < limit || e.target.value.length < value.length)
-    ) {
-      setValue(e.target.value);
-    }
-    //slice if bigger
-    else if (e.target.value.length > limit) {
-      const diff = e.target.value.length - limit;
-      let str = e.target.value;
-      const slice = str.slice(0, -1 * diff);
-      setValue(slice);
-    }
-  };
-
   const checkDate = () => {
     const arr = ["day", "days", "month", "months", "year", "years"];
 
@@ -89,20 +73,14 @@ const Item = ({ id, text, date }) => {
     }
   }, [store.list]);
 
-  if (itemRef && itemRef.current) {
-    const currentStyling = window.getComputedStyle(itemRef.current);
-    const paddingTop = currentStyling.getPropertyValue("padding-top");
-    const paddingBottom = currentStyling.getPropertyValue("padding-bottom");
-    itemRef.current.style.height = "auto";
-    itemRef.current.style.height = `calc(${itemRef.current.scrollHeight}px - ${paddingTop} - ${paddingBottom})`;
-  }
+  handleTextareaStyleChange(itemRef);
 
   return (
     <>
       <StyledItem
         ref={itemRef}
         value={value}
-        onChange={(e) => handleOnChange(e)}
+        onChange={(e) => handleThoughtChange(e, value, setValue)}
         onBlur={store.updateItem}
         onKeyDown={(e) => handleKeyDown(e)}
         onMouseOver={() => {
