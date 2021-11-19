@@ -6,6 +6,7 @@ import {
   handleThoughtChange,
   handleTextareaStyleChange,
 } from "../../lib/handlers";
+import { isLongerThanADay } from "../../lib/misc";
 import {
   BlurryTextarea,
   animationBlur,
@@ -59,16 +60,10 @@ const Item = ({ id, text, date }) => {
     }
   };
 
-  const checkDate = () => {
-    const arr = ["day", "days", "month", "months", "year", "years"];
-
-    return arr.some((item) => itemDate.includes(item));
-  };
-
   React.useEffect(() => {
     triggerAnimation();
 
-    if (checkDate()) {
+    if (isLongerThanADay(itemDate)) {
       setIsReadOnly(true);
     }
   }, []);
