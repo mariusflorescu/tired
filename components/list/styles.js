@@ -8,4 +8,9 @@ const Wrapper = styled("div", {
   gap: "$3",
 });
 
-export { Wrapper };
+const DateHeading = styled("h2", {
+  fontSize: "$6",
+  fontWeight: 600,
+});
+
+export { Wrapper, DateHeading };

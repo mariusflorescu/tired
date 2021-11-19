@@ -1,20 +1,16 @@
 import React from "react";
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
 import useStore from "../../context";
 import {
   handleThoughtChange,
   handleTextareaStyleChange,
 } from "../../lib/handlers";
-import { isLongerThanADay } from "../../lib/misc";
+import { parseDate, isLongerThanADay } from "../../lib/misc";
 import {
   BlurryTextarea,
   animationBlur,
   StyledDateWrapper,
   StyledDate,
 } from "./styles";
-
-dayjs.extend(relativeTime);
 
 const Item = ({ id, text, date }) => {
   const store = useStore();
@@ -25,7 +21,7 @@ const Item = ({ id, text, date }) => {
   const [visibleDate, setVisibleDate] = React.useState(false);
   const [isReadyOnly, setIsReadOnly] = React.useState(false);
 
-  const itemDate = dayjs(date).toNow(true);
+  const itemDate = parseDate(date);
 
   const triggerAnimation = () => {
     if (itemRef && itemRef.current) {
@@ -84,7 +80,7 @@ const Item = ({ id, text, date }) => {
         ref={itemRef}
         value={value}
         onChange={(e) => handleThoughtChange(e, value, setValue)}
-        onBlur={store.updateItem}
+        onBlur={() => updateItem()}
         onKeyDown={(e) => handleKeyDown(e)}
         onMouseOver={() => {
           if (itemRef && itemRef.current) {
