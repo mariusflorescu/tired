@@ -17,10 +17,14 @@ dayjs.extend(relativeTime);
 
 const Item = ({ id, text, date }) => {
   const store = useStore();
+
   const itemRef = React.useRef(null);
+
   const [value, setValue] = React.useState(text);
   const [visibleDate, setVisibleDate] = React.useState(false);
   const [isReadyOnly, setIsReadOnly] = React.useState(false);
+
+  const itemDate = dayjs(date).toNow(true);
 
   const triggerAnimation = () => {
     if (itemRef && itemRef.current) {
@@ -58,13 +62,15 @@ const Item = ({ id, text, date }) => {
   const checkDate = () => {
     const arr = ["day", "days", "month", "months", "year", "years"];
 
-    return arr.some((item) => date.includes(item));
+    return arr.some((item) => itemDate.includes(item));
   };
 
   React.useEffect(() => {
     triggerAnimation();
 
-    if (checkDate) setIsReadOnly(true);
+    if (checkDate()) {
+      setIsReadOnly(true);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -79,6 +85,7 @@ const Item = ({ id, text, date }) => {
     <>
       <BlurryTextarea
         rows={1}
+        readOnly={isReadyOnly}
         ref={itemRef}
         value={value}
         onChange={(e) => handleThoughtChange(e, value, setValue)}
@@ -95,7 +102,7 @@ const Item = ({ id, text, date }) => {
       />
       <StyledDateWrapper>
         <StyledDate style={visibleDate ? { opacity: 1 } : { opacity: 0 }}>
-          {dayjs(date).toNow(true)} ago
+          {itemDate} ago
         </StyledDate>
       </StyledDateWrapper>
     </>
