@@ -11,8 +11,7 @@ const animationBlur = keyframes({
 
 const StyledItem = styled("textarea", {
   all: "unset",
-  paddingY: "$3",
-  paddingX: "$2",
+  padding: "$2",
   borderRadius: "$1",
   filter: "blur(4px) opacity(0.6)",
   whiteSpace: "pre-line",
@@ -29,4 +28,19 @@ const StyledItem = styled("textarea", {
   },
 });
 
-export { StyledItem, animationBlur };
+const StyledDateWrapper = styled("div", {
+  width: "100%",
+  display: "flex",
+  justifyContent: "flex-end",
+});
+
+const StyledDate = styled("small", {
+  fontSize: "$2",
+  color: "$gray500",
+
+  "@motionSafe": {
+    transition: "opacity 150ms ease",
+  },
+});
+
+export { StyledItem, animationBlur, StyledDateWrapper, StyledDate };

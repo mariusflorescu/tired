@@ -17,6 +17,7 @@ const Input = () => {
         const obj = {
           key: generateId(),
           text: current,
+          date: Date.now(),
         };
         add(obj);
         setCurrent("");

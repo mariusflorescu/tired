@@ -7,8 +7,8 @@ const List = () => {
 
   return (
     <Wrapper>
-      {items.map(({ key, text }) => (
-        <Item key={key} id={key} text={text}></Item>
+      {items.map(({ key, text, date }) => (
+        <Item key={key} id={key} text={text} date={date}></Item>
       ))}
     </Wrapper>
   );

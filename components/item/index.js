@@ -1,11 +1,21 @@
 import React from "react";
 import useStore from "../../context";
-import { StyledItem, animationBlur } from "./styles";
+import {
+  StyledItem,
+  animationBlur,
+  StyledDateWrapper,
+  StyledDate,
+} from "./styles";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
 
-const Item = ({ id, text }) => {
+dayjs.extend(relativeTime);
+
+const Item = ({ id, text, date }) => {
   const store = useStore();
   const itemRef = React.useRef(null);
   const [value, setValue] = React.useState(text);
+  const [visibleDate, setVisibleDate] = React.useState(false);
 
   const triggerAnimation = () => {
     if (itemRef && itemRef.current) {
@@ -40,6 +50,12 @@ const Item = ({ id, text }) => {
     }
   };
 
+  const checkDate = () => {
+    const arr = ["day", "days", "month", "months", "year", "years"];
+
+    return arr.some((item) => date.includes(item));
+  };
+
   React.useEffect(() => {
     triggerAnimation();
   }, []);
@@ -51,19 +67,29 @@ const Item = ({ id, text }) => {
   }, [store.list]);
 
   return (
-    <StyledItem
-      ref={itemRef}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onBlur={store.updateItem}
-      onKeyDown={(e) => handleKeyDown(e)}
-      onMouseOver={() => {
-        if (itemRef && itemRef.current) {
-          itemRef.current.style.animation = "";
-        }
-      }}
-      placeholder="Erase it... &#128465;"
-    />
+    <>
+      <StyledItem
+        readOnly={checkDate}
+        ref={itemRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={store.updateItem}
+        onKeyDown={(e) => handleKeyDown(e)}
+        onMouseOver={() => {
+          if (itemRef && itemRef.current) {
+            itemRef.current.style.animation = "";
+          }
+          setVisibleDate(true);
+        }}
+        onMouseLeave={() => setVisibleDate(false)}
+        placeholder="Erase it... &#128465;"
+      />
+      <StyledDateWrapper>
+        <StyledDate style={visibleDate ? { opacity: 1 } : { opacity: 0 }}>
+          {dayjs(date).toNow(true)} ago
+        </StyledDate>
+      </StyledDateWrapper>
+    </>
   );
 };
 

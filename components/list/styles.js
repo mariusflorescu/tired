@@ -5,7 +5,7 @@ const Wrapper = styled("div", {
   paddingY: "$5",
   display: "flex",
   flexDirection: "column",
-  gap: "$4",
+  gap: "$3",
 });
 
 export { Wrapper };
