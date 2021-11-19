@@ -14,7 +14,6 @@ const StyledItem = styled("textarea", {
   padding: "$2",
   borderRadius: "$1",
   filter: "blur(4px) opacity(0.6)",
-  whiteSpace: "pre-line",
 
   "@motionSafe": {
     transition: "250ms ease",

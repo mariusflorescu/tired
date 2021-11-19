@@ -11,11 +11,14 @@ import dayjs from "dayjs";
 
 dayjs.extend(relativeTime);
 
+const limit = 240;
+
 const Item = ({ id, text, date }) => {
   const store = useStore();
   const itemRef = React.useRef(null);
   const [value, setValue] = React.useState(text);
   const [visibleDate, setVisibleDate] = React.useState(false);
+  const [isReadyOnly, setIsReadOnly] = React.useState(false);
 
   const triggerAnimation = () => {
     if (itemRef && itemRef.current) {
@@ -39,7 +42,7 @@ const Item = ({ id, text, date }) => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.keyCode === 13 && !e.shiftKey) {
       updateItem();
 
       if (itemRef && itemRef.current) {
@@ -47,6 +50,24 @@ const Item = ({ id, text, date }) => {
       }
     } else if (e.key === "Backspace" && value.length === 0) {
       store.delete(id);
+    }
+  };
+
+  const handleOnChange = (e) => {
+    //endless if but whatever
+    if (
+      e.target.value.length <= limit &&
+      (e.target.value.trim() !== "" || value.trim() !== "") &&
+      (value.length < limit || e.target.value.length < value.length)
+    ) {
+      setValue(e.target.value);
+    }
+    //slice if bigger
+    else if (e.target.value.length > limit) {
+      const diff = e.target.value.length - limit;
+      let str = e.target.value;
+      const slice = str.slice(0, -1 * diff);
+      setValue(slice);
     }
   };
 
@@ -58,6 +79,8 @@ const Item = ({ id, text, date }) => {
 
   React.useEffect(() => {
     triggerAnimation();
+
+    if (checkDate) setIsReadOnly(true);
   }, []);
 
   React.useEffect(() => {
@@ -66,13 +89,20 @@ const Item = ({ id, text, date }) => {
     }
   }, [store.list]);
 
+  if (itemRef && itemRef.current) {
+    const currentStyling = window.getComputedStyle(itemRef.current);
+    const paddingTop = currentStyling.getPropertyValue("padding-top");
+    const paddingBottom = currentStyling.getPropertyValue("padding-bottom");
+    itemRef.current.style.height = "auto";
+    itemRef.current.style.height = `calc(${itemRef.current.scrollHeight}px - ${paddingTop} - ${paddingBottom})`;
+  }
+
   return (
     <>
       <StyledItem
-        readOnly={checkDate}
         ref={itemRef}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => handleOnChange(e)}
         onBlur={store.updateItem}
         onKeyDown={(e) => handleKeyDown(e)}
         onMouseOver={() => {
