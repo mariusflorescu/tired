@@ -7,7 +7,7 @@ import {
   handleTextareaStyleChange,
 } from "../../lib/handlers";
 import {
-  StyledItem,
+  BlurryTextarea,
   animationBlur,
   StyledDateWrapper,
   StyledDate,
@@ -77,7 +77,8 @@ const Item = ({ id, text, date }) => {
 
   return (
     <>
-      <StyledItem
+      <BlurryTextarea
+        rows={1}
         ref={itemRef}
         value={value}
         onChange={(e) => handleThoughtChange(e, value, setValue)}

@@ -6,7 +6,8 @@ import {
   handleTextareaStyleChange,
 } from "../../lib/handlers";
 import generateId from "../../lib/generateId";
-import { StyledInput, Small } from "./styles";
+import Textarea from "../textarea";
+import { Small } from "./styles";
 
 const Input = () => {
   const { add } = useStore();
@@ -35,7 +36,7 @@ const Input = () => {
 
   return (
     <React.Fragment>
-      <StyledInput
+      <Textarea
         rows={1}
         ref={textareaRef}
         value={current}
