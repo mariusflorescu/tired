@@ -95,11 +95,13 @@ const Item = ({ id, text, date }) => {
         onMouseLeave={() => setVisibleDate(false)}
         placeholder="Erase it... &#128465;"
       />
-      <StyledDateWrapper>
-        <StyledDate style={visibleDate ? { opacity: 1 } : { opacity: 0 }}>
-          {itemDate} ago
-        </StyledDate>
-      </StyledDateWrapper>
+      {!isReadyOnly && (
+        <StyledDateWrapper>
+          <StyledDate style={visibleDate ? { opacity: 1 } : { opacity: 0 }}>
+            {itemDate} ago
+          </StyledDate>
+        </StyledDateWrapper>
+      )}
     </>
   );
 };
